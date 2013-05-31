@@ -469,12 +469,7 @@ class Client extends Thread
 					System.out.println(id+"클라이언트가 exit버튼누르면 temp:"+msg+"roomnum"+roomnum);
 					svr.clientcontroller.sendToAll(msg);	// 방에 퇴장하여 변경된 방의 정보를 모든 client에게 보냄
 
-					//유저의 위치를 나간 것으로 표시
-					svr.roomcontroller.outUserPosition(roomnum, seq);
-					svr.roomcontroller.outUserInfo(roomnum, seq);
-					//방에 남은 유저들에게 나간 것을 알려줌
-					msg = "[OutUser]" + seq;
-					svr.clientcontroller.sendToRoom(roomnum, msg);
+
 					
 					if(!(temp.equals("null")))			// 내가 마지막으로 나오는 것이 아니면 (방에 사람이 남아있다면)
 					{

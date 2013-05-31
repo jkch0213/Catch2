@@ -58,7 +58,7 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener {
 	GamePanel gamepanel; // 게임을 진행하는 패널
 
 	SignUpFrame signUp; // 회원가입 페이지 보여주는 프레임
-	String state; // 창여러개 뜨는걸 방지하기위해....나중에 자세히 코딩
+	boolean state=false; //로그인상태를 알려줌
 	FrameControl fc;
 	GameUser1 gameUser1;
 	GameUser2 gameUser2;
@@ -335,7 +335,7 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener {
 					removeLoginPalnel();
 
 					WaitRoom();
-
+					state=true;
 					repaint();
 
 				} else if (line.startsWith("[ShowLv]")) {
@@ -388,6 +388,8 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener {
 						e1.printStackTrace();
 					}
 				} else if (line.startsWith("[MakeRoom]")) {
+					if(state==true)
+					{
 					tokenizer2 = new StringTokenizer(line.substring(10), "\t"); // /t를
 																				// 기준으로
 																				// col을
@@ -399,6 +401,7 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener {
 						i++;
 					}
 					roompanel.tmodel.addRow(tokens2); // 방 목록 테이블에 만든 방정보를 추가
+					}
 				}
 
 				// if(line.startsWith("[RoomSize]"))
@@ -446,6 +449,11 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener {
 					}
 					saveRowNum = i;
 				} else if (line.startsWith("[EnterRoom]")) {
+					if(state==true)
+					{
+					
+						
+					
 					System.out.println("클라이언트가 받은 enter메세지"
 							+ line.substring(11));
 					tokenizer2 = new StringTokenizer(line.substring(11), "\t"); // /t를
@@ -482,7 +490,7 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener {
 						}
 					}
 					repaint();
-
+				}
 				} else if (line.startsWith("[ExitRoom]")) {
 					tokenizer2 = new StringTokenizer(line.substring(10), "\t"); // /t를
 																				// 기준으로

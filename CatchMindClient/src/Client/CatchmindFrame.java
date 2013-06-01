@@ -358,12 +358,41 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener {
 					myInformation.setCoin(Integer.parseInt(tem));
 					// avatarpanel.setImfo(myInformation);
 					// avatarpanel.repaintinfo();
-				} else if (line.startsWith("[ShowAvatar]")) {
+				} 
+				else if (line.startsWith("[ShowAvatar]")) {
 					String tem = line.substring(12);
 					myInformation.setAvatar(Integer.parseInt(tem));
 					// avatarpanel.setImfo(myInformation);
 					// avatarpanel.repaintinfo();
-				} else if (line.startsWith("[LoginFail]")) {
+				} 
+				else if (line.startsWith("[ShowMoreExp]")) {
+					String tem = line.substring(13);
+
+					myInformation.setMoreExp(Integer.parseInt(tem));
+					avatarpanel.setImfo(myInformation);
+					avatarpanel.repaintinfo();
+				} 
+				else if (line.startsWith("[ShowMoreCoin]")) {
+					String tem = line.substring(14);
+
+					myInformation.setMoreCoin(Integer.parseInt(tem));
+					avatarpanel.setImfo(myInformation);
+					avatarpanel.repaintinfo();
+				} 
+				else if (line.startsWith("[ShowOneword]")) {
+					String tem = line.substring(13);
+
+					myInformation.setOneword(Integer.parseInt(tem));
+					avatarpanel.setImfo(myInformation);
+					avatarpanel.repaintinfo();
+				} 
+				else if (line.startsWith("[ShowHowmanyword]")) {
+					String tem = line.substring(17);
+					myInformation.setHowmanyword(Integer.parseInt(tem));
+					avatarpanel.setImfo(myInformation);
+					avatarpanel.repaintinfo();
+				}
+				else if (line.startsWith("[LoginFail]")) {
 					SoundEffect.FAIL_LOGIN.Effect_play();
 					String line2 = line.substring(11);
 					if (line2.equals("Fail")) {
@@ -540,12 +569,12 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener {
 					String msg = line.substring(17);
 					String tokens[] = msg.split("\t");
 
-					if (tokens[2].equals("0"))			gameUser1.SetUserInfo(tokens[0], tokens[1]);
-					else if (tokens[2].equals("1"))		gameUser2.SetUserInfo(tokens[0], tokens[1]);
-					else if (tokens[2].equals("2"))		gameUser3.SetUserInfo(tokens[0], tokens[1]);
-					else if (tokens[2].equals("3"))		gameUser4.SetUserInfo(tokens[0], tokens[1]);
-					else if (tokens[2].equals("4"))		gameUser5.SetUserInfo(tokens[0], tokens[1]);
-					else if (tokens[2].equals("5"))		gameUser6.SetUserInfo(tokens[0], tokens[1]);
+					if (tokens[2].equals("0"))			gameUser1.SetUserInfo(tokens[0], tokens[1], tokens[3]);
+					else if (tokens[2].equals("1"))		gameUser2.SetUserInfo(tokens[0], tokens[1], tokens[3]);
+					else if (tokens[2].equals("2"))		gameUser3.SetUserInfo(tokens[0], tokens[1], tokens[3]);
+					else if (tokens[2].equals("3"))		gameUser4.SetUserInfo(tokens[0], tokens[1], tokens[3]);
+					else if (tokens[2].equals("4"))		gameUser5.SetUserInfo(tokens[0], tokens[1], tokens[3]);
+					else if (tokens[2].equals("5"))		gameUser6.SetUserInfo(tokens[0], tokens[1], tokens[3]);
 
 				} else if (line.startsWith("[SpreadOtherUsers]")) {
 					int Number = Integer.parseInt(line.substring(18, 19));
@@ -556,12 +585,12 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener {
 					for (int i = 0; i < Number; i++) {
 						tokens3 = tokens[i].split("\t");
 
-						if (tokens3[2].equals("0"))		gameUser1.SetUserInfo(tokens3[0], tokens3[1]);
-						else if (tokens3[2].equals("1"))gameUser2.SetUserInfo(tokens3[0], tokens3[1]);
-						else if (tokens3[2].equals("2"))gameUser3.SetUserInfo(tokens3[0], tokens3[1]);
-						else if (tokens3[2].equals("3"))gameUser4.SetUserInfo(tokens3[0], tokens3[1]);
-						else if (tokens3[2].equals("4"))gameUser5.SetUserInfo(tokens3[0], tokens3[1]);
-						else if (tokens3[2].equals("5"))gameUser6.SetUserInfo(tokens3[0], tokens3[1]);
+						if (tokens3[2].equals("0"))		gameUser1.SetUserInfo(tokens3[0], tokens3[1], tokens3[3]);
+						else if (tokens3[2].equals("1"))gameUser2.SetUserInfo(tokens3[0], tokens3[1], tokens3[3]);
+						else if (tokens3[2].equals("2"))gameUser3.SetUserInfo(tokens3[0], tokens3[1], tokens3[3]);
+						else if (tokens3[2].equals("3"))gameUser4.SetUserInfo(tokens3[0], tokens3[1], tokens3[3]);
+						else if (tokens3[2].equals("4"))gameUser5.SetUserInfo(tokens3[0], tokens3[1], tokens3[3]);
+						else if (tokens3[2].equals("5"))gameUser6.SetUserInfo(tokens3[0], tokens3[1], tokens3[3]);
 					}
 				} else if (line.startsWith("[OutUser]")) {
 					int User_Num = Integer.parseInt(line.substring(9, 10));
@@ -854,6 +883,7 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener {
 				}
 				try {
 					CatchmindDriver.getDos().writeUTF("[GameSetCancel]");
+					gamepanel.removecancel();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -870,13 +900,24 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener {
 			SoundEffect.BUTTON.Effect_play();
 			SoundEffect.INGAME.stop();
 			try {
+				CatchmindDriver.getDos().writeUTF("[GameSetCancel]");
 				CatchmindDriver.getDos().writeUTF("[ExitRoom]");
+				gamepanel.removecancel();
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			removeGameRoom();
 			WaitRoom();
+		} else if (event.getSource() == itemShop) {
+			SoundEffect.BUTTON.Effect_play();
+			SoundEffect.INGAME.stop();
+			fc.ItemShopFrame(myInformation);
+			fc.setBounds(700, 100, 400, 600);
+			fc.setResizable(false);
+			fc.setVisible(true);
+
 		}
 	}
 }

@@ -47,8 +47,11 @@ class Client extends Thread
 	protected String exp;
 	protected String coin;
 	protected String avatar;
-	
-	
+	protected String numMoreExp;
+	protected String numMoreCoin;
+	protected String numShowOneword;
+	protected String numHowmanyword;
+
 	public Client(Server svr, Socket s) throws IOException
 	{
 		this.svr = svr;
@@ -255,7 +258,11 @@ class Client extends Thread
 							exp=saveimfo[1];
 							
 							coin=saveimfo[2];
-							avatar=saveimfo[3];
+							avatar = saveimfo[3];
+							numMoreExp = saveimfo[4];
+							numMoreCoin = saveimfo[5];
+							numShowOneword = saveimfo[6];
+							numHowmanyword = saveimfo[7];
 							while(level=="false"||exp=="false"||exp=="false"||coin=="false")
 							{
 								imfo = Login.LoadInfo(id);
@@ -271,14 +278,22 @@ class Client extends Thread
 								
 								exp=saveimfo[1];
 								
-								coin=saveimfo[2];
-								avatar=saveimfo[3];
+								coin = saveimfo[2];
+								avatar = saveimfo[3];
+								numMoreExp = saveimfo[4];
+								numMoreCoin = saveimfo[5];
+								numShowOneword = saveimfo[6];
+								numHowmanyword = saveimfo[7];
 							}
 							sendToMe("[ShowLv]"+level);
-							sendToMe("[ShowExp]"+exp);
-							sendToMe("[ShowCoin]"+coin);
-							
-//							sendToMe("[ShowAvatar]"+avatar);
+							sendToMe("[ShowExp]" + exp);
+							sendToMe("[ShowCoin]" + coin);
+							sendToMe("[ShowMoreExp]" + numMoreExp);
+							sendToMe("[ShowMoreCoin]" + numMoreCoin);
+							sendToMe("[ShowOneword]" + numShowOneword);
+							sendToMe("[ShowHowmanyword]" + numHowmanyword);
+
+							// sendToMe("[ShowAvatar]"+avatar);
 							
 							System.out.println(level+exp+coin+avatar);
 							System.out.println("********정보를 서버에서 보낼때*******************");
@@ -417,12 +432,12 @@ class Client extends Thread
 					msg = svr.roomcontroller.getPlayerIDlist(roomnum);		// 방의 IDlist를 업데이트
 					
 					// 유저의 정보를 저장함
-					msg = id + "\t" + level + "\t" + 0 + "\n";
+					msg = id + "\t" + level + "\t" + 0 + "\t" + "NoReady" + "\n";
 					svr.roomcontroller.setUserInfo(roomnum, msg, 0);
 					//유저의 방 입장 순서위치를 저장
 					svr.getRoomController().setUserPosition(roomnum,0);	
 					// 게임 내에서 사용자의 정보를 보여주도록 메시지 보냄 
-					msg = "[PositioningUser]" + id + "\t" + level + "\t" + 0;
+					msg = "[PositioningUser]" + id + "\t" + level + "\t" + 0 + "\t" + "NoReady";
 					sendToMe(msg);
 					
 					System.out.println(id+"방번호"+roomnum);
@@ -440,10 +455,10 @@ class Client extends Thread
 					seq = svr.getRoomController().getUserPosition(roomnum);	// 방 내의 위치를 얻어옴
 					svr.getRoomController().setUserPosition(roomnum,seq);	// 방 내의 나의 위치를 고정시킴	
 					//현재 유저의 정보를 저장
-					msg = id + "\t" + level + "\t" + seq + "\n";
+					msg = id + "\t" + level + "\t" + seq + "\t" + "NoReady" + "\n";
 					svr.roomcontroller.setUserInfo(roomnum, msg, seq);
 					// 자신의 정보를 다른 유저들에게 보냄
-					msg = "[PositioningUser]" + id + "\t" + level + "\t" + seq;
+					msg = "[PositioningUser]" + id + "\t" + level + "\t" + seq + "\t" + "NoReady";
 					svr.clientcontroller.sendToRoom(roomnum, msg);
 					// 방에 있는 유저(자신을 포함)들을 보여줌
 					msg = "[SpreadOtherUsers]" + svr.roomcontroller.getPeopleSize(roomnum) + svr.roomcontroller.getUserInfo(roomnum);
@@ -455,6 +470,7 @@ class Client extends Thread
 				else if(msg.startsWith("[ExitRoom]"))
 				{
 					String temp;
+					int saveroomnum=roomnum;
 					// 유저의 위치를 나간 것으로 표시
 					svr.roomcontroller.outUserPosition(roomnum, seq);
 					svr.roomcontroller.outUserInfo(roomnum, seq);
@@ -468,7 +484,18 @@ class Client extends Thread
 					msg +=  temp;
 					System.out.println(id+"클라이언트가 exit버튼누르면 temp:"+msg+"roomnum"+roomnum);
 					svr.clientcontroller.sendToAll(msg);	// 방에 퇴장하여 변경된 방의 정보를 모든 client에게 보냄
+					
+					String check=svr.roomcontroller.checkStart(saveroomnum);
+					System.out.println(check+"check");
+					if(check=="allReady")
+					{
+						System.out.println(saveroomnum+"방번호야");
+						check=svr.roomcontroller.getFirstPlayerId(saveroomnum);
+						System.out.println(check);
+						svr.clientcontroller.sendToOne(check, "[GameSetStart]");
+						System.out.println(id+"방번호"+roomnum);
 
+					}
 
 					
 					if(!(temp.equals("null")))			// 내가 마지막으로 나오는 것이 아니면 (방에 사람이 남아있다면)
@@ -513,17 +540,24 @@ class Client extends Thread
 					}
 					msg += seq;
 					svr.clientcontroller.sendToRoom(roomnum, msg);
-				         
+					//레디를 클릭한 유저의 정보를 레디 상태로 저장
+					msg = id + "\t" + level + "\t" + seq + "\t" + "Ready" + "\n";
+					svr.roomcontroller.setUserInfo(roomnum, msg, seq);
+					  
 				}
 				else if(msg.startsWith("[GameSetCancel]"))
 				{
 					state="";
 					String check;
-					check=svr.roomcontroller.getFirstPlayerId(roomnum);
+					check = svr.roomcontroller.getFirstPlayerId(roomnum);
 					svr.clientcontroller.sendToOne(check, "[GameRemoveStart]");
-					 System.out.println(id+"방번호"+roomnum);
-					 msg += seq;
-					 svr.clientcontroller.sendToRoom(roomnum, msg);
+					System.out.println(id + "방번호" + roomnum);
+					msg += seq;
+					svr.clientcontroller.sendToRoom(roomnum, msg);
+					// 레디를 클릭한 유저의 정보를 레디 상태로 저장
+					msg = id + "\t" + level + "\t" + seq + "\t" + "NoReady"	+ "\n";
+					svr.roomcontroller.setUserInfo(roomnum, msg, seq);
+
 				}
 				else if(msg.startsWith("[GameStart]"))
 				{

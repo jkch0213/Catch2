@@ -3,7 +3,8 @@ package Client;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -38,24 +39,93 @@ public class FrameControl  extends JFrame implements  ActionListener
 	JButton join;
 	JButton loadInfo;
 	JButton loadInfoExit;
-	//*************************방정보보는 프레임
-	
-	
-	
-	
-	
-	
+	// *************************방정보보는 프레임
+
+	// *************************아이템샵
+	JButton coinUpIcon;
+	JButton expUpIcon;
+	JButton oneWordIcon;
+	JButton hintWordIcon;
+
+	JButton itemShopExit;
+	JButton itemBuy;
+	JButton itemReset;
+
+	JLabel amount1;
+	JLabel amount2;
+	JLabel amount3;
+	JLabel amount4;
+
+	JLabel description1;
+	JLabel description2;
+	JLabel description3;
+	JLabel description4;
+
+	// **************************
+
+	public void ItemShopFrame(MyInformation myInformation) {
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.setLayout(null);
+
+		coinUpIcon = new JButton();
+		expUpIcon = new JButton();
+		oneWordIcon = new JButton();
+		hintWordIcon = new JButton();
+
+		itemBuy = new JButton("구매");
+		itemReset = new JButton("초기화");
+		itemShopExit = new JButton("취소");
+
+		coinUpIcon.setIcon(new ImageIcon("images/coinup.jpg"));
+		expUpIcon.setIcon(new ImageIcon("images/expup.jpg"));
+		oneWordIcon.setIcon(new ImageIcon("images/oneword.jpg"));
+		hintWordIcon.setIcon(new ImageIcon("images/hintword.jpg"));
+
+		coinUpIcon.setBounds(60, 80, 50, 50);
+		expUpIcon.setBounds(60, 180, 50, 50);
+		oneWordIcon.setBounds(60, 280, 50, 50);
+		hintWordIcon.setBounds(60, 380, 50, 50);
+
+		itemBuy.setBounds(40, 530, 80, 30);
+		itemReset.setBounds(160, 530, 80, 30);
+		itemShopExit.setBounds(280, 530, 80, 30);
+
+		itemBuy.addActionListener(this);
+		itemReset.addActionListener(this);
+		itemShopExit.addActionListener(this);
+
+		this.add(coinUpIcon);
+		this.add(expUpIcon);
+		this.add(oneWordIcon);
+		this.add(hintWordIcon);
+		this.add(itemBuy);
+		this.add(itemReset);
+		this.add(itemShopExit);
+
+		// itemShopExit.setBounds(x, y, width, height);
+
+	}
+
+	public void removeItemShopFrame() {
+		this.remove(coinUpIcon);
+		this.remove(expUpIcon);
+		this.remove(oneWordIcon);
+		this.remove(hintWordIcon);
+		this.remove(itemBuy);
+		this.remove(itemReset);
+		this.remove(itemShopExit);
+		this.setVisible(false);
+		repaint();
+	}
+
 	public void RoomMakeFrame()
 	{
 		
 		this.setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
-		 String major[]={"3","4",
-					"5","6"};
+		 String major[]={"3","4","5","6"};
 
 		this.setTitle("방만들기");
 //		this.setSize(new Dimension(WIDTH,HEIGHT));
-		
-		
 		
 		roomMakeExit = new JButton("취소");	
 		enter = new JButton("확인");	
@@ -95,6 +165,7 @@ public class FrameControl  extends JFrame implements  ActionListener
 		this.add(enter);
 
 	}
+	
 	public void removeRoomMakeFrame()
 	{
 		this.remove(InputLabel[0]);
@@ -105,22 +176,15 @@ public class FrameControl  extends JFrame implements  ActionListener
 		this.remove(enter);
 		this.setVisible(false);
 	}
-	
-	
-	 public void myInfoFrame(MyInformation myInformation){	
-		 
-		 this.setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
-		 
 
+	public void myInfoFrame(MyInformation myInformation) {
+
+		this.setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
 		this.setTitle("내정보");
 
-		
-		myinfoExit = new JButton("확인");	
+		myinfoExit = new JButton("확인");
 
-		
-		
 		myinfoExit.addActionListener(this);
-
 
 		this.setLayout(null);
 
@@ -130,15 +194,14 @@ public class FrameControl  extends JFrame implements  ActionListener
 		InputLabel[2] = new JLabel("E   X   P :");
 		InputLabel[3] = new JLabel("-Introduce-");
 		InputLabel[4] = new JLabel(myInformation.getGameId());
-		
-		InputLabel[5] = new JLabel(""+myInformation.getLevel());
-		InputLabel[6] = new JLabel(""+myInformation.getExp());
 
-		myinfoExit.setBounds(150,400,95,30);
-		
+		InputLabel[5] = new JLabel("" + myInformation.getLevel());
+		InputLabel[6] = new JLabel("" + myInformation.getExp());
+
+		myinfoExit.setBounds(150, 400, 95, 30);
 
 		InputLabel[0].setBounds(50, 50, 80, 20);
-		
+
 		InputLabel[1].setBounds(50, 80, 80, 20);
 
 		InputLabel[2].setBounds(50, 110, 80, 20);
@@ -146,12 +209,9 @@ public class FrameControl  extends JFrame implements  ActionListener
 		InputLabel[4].setBounds(200, 50, 80, 20);
 		InputLabel[5].setBounds(200, 80, 80, 20);
 		InputLabel[6].setBounds(200, 110, 80, 20);
-		
-		
-		
-		
+
 		this.add(InputLabel[0]);
-		
+
 		this.add(InputLabel[1]);
 		this.add(myinfoExit);
 		this.add(InputLabel[2]);
@@ -161,8 +221,8 @@ public class FrameControl  extends JFrame implements  ActionListener
 		this.add(InputLabel[6]);
 
 	}
-	public void removeMyInfoframe()
-	{
+
+	public void removeMyInfoframe() {
 		this.remove(InputLabel[0]);
 		
 		this.remove(InputLabel[1]);
@@ -204,8 +264,6 @@ public class FrameControl  extends JFrame implements  ActionListener
 			InputLabel[5] = new JLabel(CatchmindDriver.getFrame().getTitle());
 			InputLabel[6] = new JLabel(CatchmindDriver.getFrame().getPeopleCount());
 			InputLabel[7] = new JLabel(CatchmindDriver.getFrame().getIdList());
-			
-			
 			
 			loadInfoExit.addActionListener(this);
 			join.addActionListener(this);
@@ -279,7 +337,12 @@ public class FrameControl  extends JFrame implements  ActionListener
 			this.removeLoadInfo();
 					// 배경음악을 끔
 		}
-		if(event.getSource() == myinfoExit)
+		if (event.getSource() == itemShopExit) {
+			SoundEffect.BUTTON.Effect_play();
+			this.removeItemShopFrame();
+			// 배경음악을 끔
+		}
+		if (event.getSource() == myinfoExit)
 		{
 			SoundEffect.BUTTON.Effect_play();
 			this.removeMyInfoframe();

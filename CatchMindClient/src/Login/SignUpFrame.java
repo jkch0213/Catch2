@@ -166,7 +166,7 @@ public class SignUpFrame extends JFrame implements ActionListener{
 						"비밀번호 확인", JOptionPane.INFORMATION_MESSAGE);
 			}
 			// 주민등록번호가 6자리인지 확인
-			else if(reginum.length() != 6 || reginum == null){
+			else if(reginum.length() != 6 || reginum == null  ){
 				JOptionPane.showMessageDialog(PassText, "주민번호 처음 6자리를 입력하세요",
 						"주민등록번호 확인", JOptionPane.INFORMATION_MESSAGE);
 			}

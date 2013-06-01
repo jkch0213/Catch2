@@ -19,17 +19,18 @@ public class Login {
 	private static String PASS=null;
 	private static String REGINUM=null;
 	private static String LEVEL=null;
-	private  static String EXP=null;
+	private static String EXP=null;
 	private static String COIN=null;
-	private static String AVATAR=null;
-	private static String ITEM= null;
-    
+	private static String AVATAR = null;
+	private static String ITEM = null;
+	private static String numMoreExp = null;
+	private static String numMoreCoin = null;
+	private static String numShowOneword = null;
+	private static String numHowmanyword = null;
+
     /* 로그인  */
     public static String Login(String id, String pass) throws SQLException{
     	
-    	
-    	    
-   
     	try {
             Class.forName("com.mysql.jdbc.Driver");// 드라이버 로딩: DriverManager에 등록
 	    	conn = DriverManager.getConnection(jdbcUrl, userId, userPass);// Connection 객체를 얻어냄
@@ -72,7 +73,8 @@ public class Login {
         }
 	    try {
 	    	stmt = (PreparedStatement) conn.prepareStatement(
-	    			"SELECT user_id, level,exp,coin,avatar FROM info WHERE user_id = ? ");
+	    		    "SELECT DISTINCT level,exp,coin,avatar,numMoreExp,numMoreCoin,numShowOneword,numhowmanyword " +
+	    		    "FROM info inner join item WHERE info.user_id = ?");
 	    	stmt.setString(1, id);
 	    	
 	    	rs = stmt.executeQuery();
@@ -81,6 +83,10 @@ public class Login {
 	    		EXP = rs.getString("exp");
 	    		COIN = rs.getString("coin");
 	    		AVATAR= rs.getString("avatar");
+				numMoreExp = rs.getString("numMoreExp");
+				numMoreCoin = rs.getString("numMoreCoin");
+				numShowOneword = rs.getString("numShowOneword");
+				numHowmanyword = rs.getString("numhowmanyword");
 	    	}
 
 	    	
@@ -92,9 +98,13 @@ public class Login {
 	       	if(stmt != null) try {stmt.close();}catch(SQLException e){}
 	       	if(conn != null) try {conn.close();}catch(SQLException e){}
 
-	    }
-	        if((ID.equals(id) )) return LEVEL +"\t"+EXP+"\t"+COIN+"\t"+AVATAR;
-    	    else return "false";
+		}
+		if ((ID.equals(id)))
+			return LEVEL + "\t" + EXP + "\t" + COIN + "\t" + AVATAR + "\t"
+					+ numMoreExp + "\t" + numMoreCoin + "\t" + numShowOneword
+					+ "\t" + numHowmanyword;
+		else
+			return "false";
     	
     }
     
@@ -163,13 +173,12 @@ public class Login {
 	    	stmt.setString(5, "0");
 	    	int j = stmt.executeUpdate();
 	    	stmt = (PreparedStatement) conn.prepareStatement(
-	    			"INSERT INTO item(user_id,numMoreExp, numMoreCoin ,numShowOneword,numhowmanyword,numMorepoints) VALUES(?, ?, ?, ?,?,?)");
+	    			"INSERT INTO item(user_id,numMoreExp, numMoreCoin ,numShowOneword,numhowmanyword) VALUES(?, ?, ?, ?,?)");
 	    	stmt.setString(1, id);
 	    	stmt.setString(2, "1");
 	    	stmt.setString(3, "1");
 	    	stmt.setString(4, "1");
 	    	stmt.setString(5, "1");
-	    	stmt.setString(6, "1");
 	    	int k = stmt.executeUpdate();
 	    	
 	    	if(n == 1 && j==1 && k==1)	return "true";

@@ -8,6 +8,10 @@ public class MyInformation {
 	private int avatar;
 	private int coin;
 	private String introduce;
+	private int MoreExp;
+	private int MoreCoin;
+	private int Oneword;
+	private int Howmanyword;
 
 	public MyInformation() {
 		// TODO Auto-generated constructor stub
@@ -85,12 +89,42 @@ public class MyInformation {
 	public void upExp(int exp)
 	{
 		this.exp+=exp;
-		if(exp>=3000)
+		if(this.exp>=400)
 		{
-			this.exp=this.exp-3000;
+			this.exp=this.exp-400;
 			this.level++;
 		}
 	}
-	
 
+	public int getMoreExp() {
+		return MoreExp;
+	}
+
+	public void setMoreExp(int moreExp) {
+		MoreExp = moreExp;
+	}
+
+	public int getMoreCoin() {
+		return MoreCoin;
+	}
+
+	public void setMoreCoin(int moreCoin) {
+		MoreCoin = moreCoin;
+	}
+
+	public int getOneword() {
+		return Oneword;
+	}
+
+	public void setOneword(int oneword) {
+		Oneword = oneword;
+	}
+
+	public int getHowmanyword() {
+		return Howmanyword;
+	}
+
+	public void setHowmanyword(int howmanyword) {
+		Howmanyword = howmanyword;
+	}
 }

@@ -50,7 +50,7 @@ import javax.swing.border.TitledBorder;
 		 Avatar.setIcon(new ImageIcon("images/Avatar1.gif"));
 	}
 
-	public void SetUserInfo(String id, String level) {
+	public void SetUserInfo(String id, String level, String Ready) {
 		this.setLayout(null);
 		this.add(ID);
 		this.add(Level);
@@ -60,6 +60,12 @@ import javax.swing.border.TitledBorder;
 		this.ID.setText(id);
 		this.Level.setText("Lv : " + level);
 		this.CatchAnswer.setText("정답 : 0");
+		if (Ready.equals("Ready"))
+			this.add(Status);
+		else if (Ready.equals("NoReady"))
+			this.remove(Status);
+		;
+		repaint();
 	}
 
 	public void SetReady() {

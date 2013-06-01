@@ -119,11 +119,6 @@ public class GamePanel extends JPanel implements ActionListener {
 		}
 
 	}
-	public void removecancel()
-	{
-		this.remove(cancel);
-		this.add(ready);
-	}
 
 	public void showPoints() {
 		showpoints.setText("[맞춘문제수] : " + getscorenum + " [얻은점수] : " + points);
@@ -164,6 +159,11 @@ public class GamePanel extends JPanel implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public void removecancle()
+	{
+		this.remove(cancel);
+		this.add(ready);
 	}
 
 	public void SetStartButton() {
@@ -305,7 +305,6 @@ public class GamePanel extends JPanel implements ActionListener {
 			}
 		}
 
-		
 		public static String nextTurn() {
 			return "next";
 

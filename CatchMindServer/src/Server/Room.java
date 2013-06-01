@@ -63,7 +63,6 @@ public class Room
 		for (int i = 0; i < 6; i++) {
 			if (!UserInfo[i].equals("")) {
 				result += UserInfo[i];
-				int j = 0;
 			}
 		}
 		return result;

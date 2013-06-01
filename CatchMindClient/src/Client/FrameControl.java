@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -40,8 +42,87 @@ public class FrameControl  extends JFrame implements  ActionListener
 	JButton loadInfoExit;
 	//*************************방정보보는 프레임
 	
+	//*************************아이템샵
+	JButton coinUpIcon;
+	JButton expUpIcon;
+	JButton oneWordIcon;
+	JButton hintWordIcon;
 	
+	JButton itemShopExit;
+	JButton itemBuy;
+	JButton itemReset;
+
+	JLabel amount1;
+	JLabel amount2;
+	JLabel amount3;
+	JLabel amount4;
 	
+	JLabel description1;
+	JLabel description2;
+	JLabel description3;
+	JLabel description4;
+	//**************************
+	
+	public void ItemShopFrame(MyInformation myInformation)
+	{
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.setLayout(null);
+		
+		
+		coinUpIcon= new JButton();
+		expUpIcon= new JButton();
+		oneWordIcon= new JButton();
+		hintWordIcon= new JButton();
+	
+		itemBuy= new JButton("구매");
+		itemReset= new JButton("초기화");
+		itemShopExit = new JButton("취소");
+	
+		
+		
+		coinUpIcon.setIcon(new ImageIcon("images/coinup.jpg"));
+		expUpIcon.setIcon(new ImageIcon("images/expup.jpg"));
+		oneWordIcon.setIcon(new ImageIcon("images/oneword.jpg"));
+		hintWordIcon.setIcon(new ImageIcon("images/hintword.jpg"));
+		
+		coinUpIcon.setBounds(60, 80, 50, 50);
+		expUpIcon.setBounds(60, 180, 50, 50);
+		oneWordIcon.setBounds(60, 280, 50, 50);
+		hintWordIcon.setBounds(60, 380, 50, 50);
+		
+		itemBuy.setBounds(40, 530, 80, 30);
+		itemReset.setBounds(160, 530, 80, 30);
+		itemShopExit.setBounds(280, 530, 80, 30);
+		
+		itemBuy.addActionListener(this);
+		itemReset.addActionListener(this);
+		itemShopExit.addActionListener(this);
+		
+		this.add(coinUpIcon);
+		this.add(expUpIcon);
+		this.add(oneWordIcon);
+		this.add(hintWordIcon);
+		this.add(itemBuy);
+		this.add(itemReset);
+		this.add(itemShopExit);
+		 
+		
+//		itemShopExit.setBounds(x, y, width, height);
+		
+	}
+	
+	public void removeItemShopFrame()
+	{
+		this.remove(coinUpIcon);
+		this.remove(expUpIcon);
+		this.remove(oneWordIcon);
+		this.remove(hintWordIcon);
+		this.remove(itemBuy);
+		this.remove(itemReset);
+		this.remove(itemShopExit);
+		this.setVisible(false);
+		repaint();
+	}
 	
 	
 	
@@ -277,6 +358,12 @@ public class FrameControl  extends JFrame implements  ActionListener
 		{
 			SoundEffect.BUTTON.Effect_play();
 			this.removeLoadInfo();
+					// 배경음악을 끔
+		}
+		if(event.getSource() == itemShopExit)
+		{
+			SoundEffect.BUTTON.Effect_play();
+			this.removeItemShopFrame();
 					// 배경음악을 끔
 		}
 		if(event.getSource() == myinfoExit)
